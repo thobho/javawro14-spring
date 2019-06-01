@@ -26,6 +26,11 @@ public class UserService {
         return user.getId();
     }
 
+    public long saveUser(User user){
+        this.users.add(user);
+        return user.getId();
+    }
+
     public User getUserById(long id) {
         return users.stream()
                 .filter(student -> student.getId() == id)

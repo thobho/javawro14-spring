@@ -17,6 +17,11 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public User() {
+        this.id = idCounter;
+        idCounter++;
+    }
+
     public long getId() {
         return id;
     }
