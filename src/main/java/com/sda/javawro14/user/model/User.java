@@ -1,11 +1,15 @@
 package com.sda.javawro14.user.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class User {
 
     private long id;
     private String name;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
     private static long idCounter = 0;
