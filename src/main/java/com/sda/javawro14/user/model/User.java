@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class User {
 
-    private long id;
+    private String id;
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -15,18 +15,18 @@ public class User {
     private static long idCounter = 0;
 
     public User(String name, Date dateOfBirth) {
-        this.id = idCounter;
+        this.id = Long.toString(idCounter);
         idCounter++;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
     public User() {
-        this.id = idCounter;
+        this.id = Long.toString(idCounter);
         idCounter++;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 

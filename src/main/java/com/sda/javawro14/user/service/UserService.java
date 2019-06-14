@@ -25,13 +25,13 @@ public class UserService {
         users.add(new User("Mirek", new Date()));
     }
 
-    public long saveUser(String name) {
+    public String saveUser(String name) {
         User user = new User(name, new Date());
         users.add(user);
         return user.getId();
     }
 
-    public long saveUser(User user){
+    public String saveUser(User user){
 
         if(!validateUser(user)){
             throw new IllegalArgumentException("Invalid user");
@@ -41,9 +41,9 @@ public class UserService {
         return user.getId();
     }
 
-    public User getUserById(long id) {
+    public User getUserById(String id) {
         return users.stream()
-                .filter(student -> student.getId() == id)
+                .filter(student -> student.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Use id not found!!!"));
     }

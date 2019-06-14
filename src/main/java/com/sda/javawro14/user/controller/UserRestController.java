@@ -24,12 +24,12 @@ public class UserRestController {
     }
 
     @GetMapping("/user")
-    public User getUserById(@RequestParam("id") int id){
+    public User getUserById(@RequestParam("id") String id){
         return userService.getUserById(id);
     }
 
     @PostMapping(value = "/user")
-    public long saveUser(@RequestBody CreateUserRestRequest userCreateRequest){
+    public String saveUser(@RequestBody CreateUserRestRequest userCreateRequest){
         return userService.saveUser(userCreateRequest.getName());
     }
 }
