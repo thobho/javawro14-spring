@@ -1,12 +1,17 @@
 package com.sda.javawro14.lesson.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
-public class Lesson {
+@Document(collection = "lesson")
+public class LessonDocument {
+
+    private String id;
     private String theme;
     private Date date;
 
-    public Lesson(String theme, Date date) {
+    public LessonDocument(String theme, Date date) {
         this.theme = theme;
         this.date = date;
     }

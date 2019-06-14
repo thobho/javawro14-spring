@@ -6,28 +6,27 @@ import java.util.Date;
 
 public class User {
 
-    private long id;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
-    private static long idCounter = 0;
-
     public User(String name, Date dateOfBirth) {
-        this.id = idCounter;
-        idCounter++;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
     public User() {
-        this.id = idCounter;
-        idCounter++;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {

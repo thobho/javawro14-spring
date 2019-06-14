@@ -1,53 +1,72 @@
 package com.sda.javawro14.course.service;
 
-import com.sda.javawro14.course.model.Course;
-import com.sda.javawro14.lesson.model.Lesson;
-import com.sda.javawro14.lesson.service.LessonService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sda.javawro14.course.dto.Course;
+import com.sda.javawro14.course.model.CourseDocument;
+import com.sda.javawro14.course.repository.CourseRepositrory;
+import com.sda.javawro14.lesson.dto.Lesson;
+import com.sda.javawro14.lesson.model.LessonDocument;
+import com.sda.javawro14.lesson.repository.LessonRepository;
 import com.sda.javawro14.user.model.User;
+import com.sda.javawro14.user.model.UserEntity;
+import com.sda.javawro14.user.repository.UserRepository;
 import com.sda.javawro14.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class CourseService {
 
     private UserService userService;
 
-    private LessonService lessonService;
+    private CourseRepositrory courseRepositrory;
 
-    private List<Course> allCourses = new ArrayList<>();
+    private UserRepository userRepository;
+
+    private LessonRepository lessonRepository;
+
+    private ModelMapper modelMapper;
+
+
+    public CourseService(UserService userService, CourseRepositrory courseRepositrory, UserRepository userRepository,
+                         LessonRepository lessonRepository, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.courseRepositrory = courseRepositrory;
+        this.userRepository = userRepository;
+        this.lessonRepository = lessonRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @PostConstruct
     void init(){
-        Course spring = new Course("Spring");
-        Lesson lessonIntro = new Lesson("Intro", new Date());
-        Lesson lessonSpringBoot = new Lesson("SpringBoot", new Date());
-        spring.setLessons(Arrays.asList(lessonIntro, lessonSpringBoot));
-        spring.setUsers(Arrays.asList(new User("Janusz", new Date()), new User("Danuta", new Date())));
+        Course spring1 = new Course("SQL");
 
-        allCourses.add(spring);
+        CourseDocument spring = modelMapper.map(spring1, CourseDocument.class);
+
+        List<UserEntity> allUsers = userRepository.findAll();
+        List<LessonDocument> allLessonEntities = lessonRepository.findAll();
+
+        spring.setUsers(allUsers);
+        spring.setLessons(allLessonEntities);
+
+        courseRepositrory.save(spring);
     }
 
-    @Autowired
-    public CourseService(UserService userService, LessonService lessonService) {
-        this.userService = userService;
-        this.lessonService = lessonService;
+    public void createNewCourse(String courseName, List<User> users, List<Lesson> lessons){
+
     }
 
-    public void createNewCourse(String courseName, List<User> users){
-        Course course = new Course(courseName);
-        course.setUsers(users);
-        course.setLessons(lessonService.getAllLessons());
-        this.allCourses.add(course);
-    }
-
-    public List<Course> getAllCourses(){
-        return this.allCourses;
+    public List<Course> getAllCours(){
+        List<CourseDocument> all = courseRepositrory.findAll();
+        List<Course> collect = all.stream()
+                .map(courseDocument -> modelMapper.map(courseDocument, Course.class))
+                .collect(toList());
+        return collect;
     }
 }

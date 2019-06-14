@@ -17,16 +17,20 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Name</th>
             <th>Date of birth</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="student: ${allStudents}">
-            <td th:text="${student.id}"></td>
             <td th:text="${student.name}"></td>
             <td th:text="${#dates.format(student.dateOfBirth, 'dd-MM-yyyy')}"></td>
+            <td>
+                <form action="#" th:action="@{'/deleteUserAction/{id}'(id=${student.id})}" th:method="delete">
+                    <input type="hidden" name="_method" value="delete" />
+                    <input type="submit" class="btn-danger">
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -35,7 +39,7 @@
 <div class="container">
     <h2>Dodaj nowego studenta</h2>
 
-    <form action="#" th:action="@{/addUserAction}" th:object="${newUser}" method="post">
+    <form action="#" th:action="@{/addUserAction}" th:object="${newUser}" th:method="post">
         <div class="form-group">
 
             <label for="userName">Imie</label>

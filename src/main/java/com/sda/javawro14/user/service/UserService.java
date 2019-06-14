@@ -1,51 +1,62 @@
 package com.sda.javawro14.user.service;
 
 import com.sda.javawro14.user.model.User;
+import com.sda.javawro14.user.model.UserEntity;
+import com.sda.javawro14.user.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:values.properties")
 public class UserService {
 
-    private List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Value("${userService.description}")
     private String serviceName;
 
-    @PostConstruct
-    void init() {
-        users.add(new User("Janusz", new Date()));
-        users.add(new User("Danuta", new Date()));
-        users.add(new User("Mirek", new Date()));
+    public void deleteUserById(String id){
+        userRepository.deleteById(id);
     }
 
-    public long saveUser(String name) {
-        User user = new User(name, new Date());
-        users.add(user);
-        return user.getId();
+    public String saveUser(String name) {
+
+        UserEntity savedUser = userRepository.save(new UserEntity(name, "dummyPassword", new Date()));
+
+        return savedUser.getId();
     }
 
-    public long saveUser(User user){
+    public String saveUser(User user){
 
         if(!validateUser(user)){
             throw new IllegalArgumentException("Invalid user");
         }
 
-        this.users.add(user);
-        return user.getId();
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+
+        return userRepository.save(userEntity).getId();
     }
 
-    public User getUserById(long id) {
-        return users.stream()
-                .filter(student -> student.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Use id not found!!!"));
+    public User getUserById(String id) {
+        UserEntity foundUser = userRepository.getById(id);
+        User userToReturn = modelMapper.map(foundUser, User.class);
+        return userToReturn;
     }
 
     private boolean validateUser(User user){
@@ -66,7 +77,9 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return users;
+        return userRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+                .map(userEntity -> modelMapper.map(userEntity, User.class))
+                .collect(Collectors.toList());
     }
 
 }

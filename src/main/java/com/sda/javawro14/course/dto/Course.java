@@ -1,16 +1,16 @@
-package com.sda.javawro14.course.model;
+package com.sda.javawro14.course.dto;
 
-import com.sda.javawro14.lesson.model.Lesson;
+import com.sda.javawro14.lesson.dto.Lesson;
+import com.sda.javawro14.lesson.model.LessonDocument;
 import com.sda.javawro14.user.model.User;
+import com.sda.javawro14.user.model.UserEntity;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Course {
-
     private String name;
     private List<Lesson> lessons;
     private List<User> users;
@@ -27,6 +27,9 @@ public class Course {
         this.endDate = java.sql.Date.valueOf(endCourseDate);
         this.lessons = new ArrayList<>();
         this.users = new ArrayList<>();
+    }
+
+    public Course() {
     }
 
     public String getName() {
