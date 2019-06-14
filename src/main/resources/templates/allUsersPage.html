@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Studenci</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:insert="fragments :: mainNavbar"></div>
+
+<div class="container">
+    <h2>Lista studentów</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Date of birth</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student: ${allStudents}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${#dates.format(student.dateOfBirth, 'dd-MM-yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <h2>Dodaj nowego studenta</h2>
+
+    <form action="#" th:action="@{/addUserAction}" th:object="${newUser}" method="post">
+        <div class="form-group">
+
+            <label for="userName">Imie</label>
+            <input id="userName" type="text" th:field="${newUser.name}"/>
+
+            <label for="userDate">Nazwisko</label>
+            <input id="userDate" type="date" th:field="${newUser.dateOfBirth}" value="2000-1-01"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn-primary"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

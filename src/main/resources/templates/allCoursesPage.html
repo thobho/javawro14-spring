@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Kursy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:insert="fragments :: mainNavbar"></div>
+
+
+<div class="container">
+    <h2>Lista kursów</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>All courses</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course: ${allCourses}" style="border: 1px black">
+            <td th:text="${course.name}"></td>
+            <td th:text="${course.startDate}"></td>
+            <td th:text="${course.endDate}"></td>
+            <td>
+                <div th:each="user: ${course.users}">
+                    <span th:text="${user.name}"></span>
+                </div>
+            </td>
+            <td>
+                <div th:each="lesson: ${course.lessons}">
+                    <span th:text="${lesson.theme}"></span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

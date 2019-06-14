@@ -1,17 +1,22 @@
 package com.sda.javawro14.user.service;
 
 import com.sda.javawro14.user.model.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 
 @Service
+@PropertySource("classpath:values.properties")
 public class UserService {
 
     private List<User> users = new ArrayList<>();
+
+    @Value("${userService.description}")
+    private String serviceName;
 
     @PostConstruct
     void init() {
@@ -27,6 +32,11 @@ public class UserService {
     }
 
     public long saveUser(User user){
+
+        if(!validateUser(user)){
+            throw new IllegalArgumentException("Invalid user");
+        }
+
         this.users.add(user);
         return user.getId();
     }
@@ -36,6 +46,23 @@ public class UserService {
                 .filter(student -> student.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Use id not found!!!"));
+    }
+
+    private boolean validateUser(User user){
+        String name = user.getName();
+        if(name.length()<1 || name.length()>100){
+            return false;
+        }
+
+        Date dateOfBirth = user.getDateOfBirth();
+        Date minDateOfBrirth =
+                new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
+
+        if(dateOfBirth.before(minDateOfBrirth)){
+            return false;
+        }
+
+        return true;
     }
 
     public List<User> getAllUsers() {
