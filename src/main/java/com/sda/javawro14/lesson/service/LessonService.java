@@ -1,22 +1,26 @@
 package com.sda.javawro14.lesson.service;
 
+import com.sda.javawro14.lesson.dto.Lesson;
 import com.sda.javawro14.lesson.model.LessonDocument;
 import com.sda.javawro14.lesson.repository.LessonRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
-    public List<LessonDocument> lessonEntities = new ArrayList<>();
 
     private LessonRepository lessonRepository;
 
-    public LessonService(LessonRepository lessonRepository) {
+    private ModelMapper modelMapper;
+
+    public LessonService(LessonRepository lessonRepository, ModelMapper modelMapper) {
         this.lessonRepository = lessonRepository;
+        this.modelMapper = modelMapper;
     }
 
     @PostConstruct
@@ -31,7 +35,8 @@ public class LessonService {
 
     }
 
-    public List<LessonDocument> getAllLessons() {
-        return this.lessonEntities;
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAll().stream()
+                .map(lessonDocument -> modelMapper.map(lessonDocument, Lesson.class)).collect(Collectors.toList());
     }
 }
