@@ -1,72 +1,57 @@
 package com.sda.javawro14.user.service;
 
-import com.sda.javawro14.user.model.User;
-import org.springframework.beans.factory.annotation.Value;
+import com.sda.javawro14.user.model.UserDTO;
+import com.sda.javawro14.user.model.UserDocument;
+import com.sda.javawro14.user.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:values.properties")
 public class UserService {
 
-    private List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
 
-    @Value("${userService.description}")
-    private String serviceName;
+    private final ModelMapper modelMapper;
 
-    @PostConstruct
-    void init() {
-        users.add(new User("Janusz", new Date()));
-        users.add(new User("Danuta", new Date()));
-        users.add(new User("Mirek", new Date()));
+    @Autowired
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public String saveUser(String name) {
-        User user = new User(name, new Date());
-        users.add(user);
-        return user.getId();
+    public List<UserDTO> getAllUsers() {
+        List<UserDocument> allUserDocuments = userRepository.findAll();
+//        UserDocument userDocument = new UserDocument();
+//        UserDTO map = modelMapper.map(userDocument, UserDTO.class);
+        return allUserDocuments.stream()
+                .map(userDocument -> modelMapper.map(userDocument, UserDTO.class))
+                .collect(Collectors.toList());
     }
 
-    public String saveUser(User user){
+    public String saveUser(UserDTO userDTO) {
+        UserDocument userToSave = modelMapper.map(userDTO, UserDocument.class);
+        UserDocument insertedUser = userRepository.insert(userToSave);
+        return insertedUser.getId();
+    }
 
-        if(!validateUser(user)){
-            throw new IllegalArgumentException("Invalid user");
+    public UserDTO getUserById(String id) {
+        Optional<UserDocument> foundUserOption = userRepository.findById(id);
+
+        if(foundUserOption.isPresent()){
+            return modelMapper.map(foundUserOption.get(), UserDTO.class);
         }
 
-        this.users.add(user);
-        return user.getId();
+        throw new IllegalArgumentException("User with id not found");
     }
 
-    public User getUserById(String id) {
-        return users.stream()
-                .filter(student -> student.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Use id not found!!!"));
-    }
-
-    private boolean validateUser(User user){
-        String name = user.getName();
-        if(name.length()<1 || name.length()>100){
-            return false;
-        }
-
-        Date dateOfBirth = user.getDateOfBirth();
-        Date minDateOfBrirth =
-                new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
-
-        if(dateOfBirth.before(minDateOfBrirth)){
-            return false;
-        }
-
-        return true;
-    }
-
-    public List<User> getAllUsers() {
-        return users;
+    public String saveUser(String userName) {
+        return "";
     }
 
 }

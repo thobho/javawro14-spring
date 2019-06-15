@@ -27,8 +27,8 @@
             <td th:text="${course.startDate}"></td>
             <td th:text="${course.endDate}"></td>
             <td>
-                <div th:each="user: ${course.users}">
-                    <span th:text="${user.name}"></span>
+                <div th:each="userDTO: ${course.userDTOS}">
+                    <span th:text="${userDTO.name}"></span>
                 </div>
             </td>
             <td>
@@ -41,6 +41,7 @@
     </table>
 </div>
 
+<div th:insert="fragments :: mainFooter"></div>
 
 </body>
 </html>

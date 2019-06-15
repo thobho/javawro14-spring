@@ -1,7 +1,7 @@
 package com.sda.javawro14.user.controller;
 
+import com.sda.javawro14.user.model.UserDTO;
 import com.sda.javawro14.user.service.UserService;
-import com.sda.javawro14.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,17 +24,17 @@ public class UserController {
 
     @GetMapping("/allUsersPage")
     public String displayAllUsers(Model model) {
-        List<User> allUsers = userService.getAllUsers();
-        model.addAttribute("allStudents", allUsers);
-        model.addAttribute("newUser", new User());
+        List<UserDTO> allUserDTOS = userService.getAllUsers();
+        model.addAttribute("allStudents", allUserDTOS);
+        model.addAttribute("newUser", new UserDTO());
         return "allUsersPage";
     }
 
     @PostMapping("/addUserAction")
-    public String addNewUser(@ModelAttribute("newUser") User user, Model model) {
-        userService.saveUser(user);
-        List<User> updatedUserList = userService.getAllUsers();
-        model.addAttribute("allStudents", updatedUserList);
+    public String addNewUser(@ModelAttribute("newUser") UserDTO userDTO, Model model) {
+        userService.saveUser(userDTO);
+        List<UserDTO> updatedUserDTOList = userService.getAllUsers();
+        model.addAttribute("allStudents", updatedUserDTOList);
         return "allUsersPage";
     }
 

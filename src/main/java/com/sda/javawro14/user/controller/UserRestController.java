@@ -1,8 +1,8 @@
 package com.sda.javawro14.user.controller;
 
 import com.sda.javawro14.user.dto.CreateUserRestRequest;
+import com.sda.javawro14.user.model.UserDTO;
 import com.sda.javawro14.user.service.UserService;
-import com.sda.javawro14.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +18,13 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @RequestMapping("/testUser")
-    public User getTestUser(@RequestParam("name") String userName){
-        return new User(userName, new Date());
-    }
+//    @RequestMapping("/testUser")
+//    public UserDTO getTestUser(@RequestParam("name") String userName){
+//        return new UserDTO(userName, new Date());
+//    }
 
     @GetMapping("/user")
-    public User getUserById(@RequestParam("id") String id){
+    public UserDTO getUserById(@RequestParam("id") String id){
         return userService.getUserById(id);
     }
 

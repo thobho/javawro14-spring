@@ -3,7 +3,7 @@ package com.sda.javawro14.course.service;
 import com.sda.javawro14.course.model.Course;
 import com.sda.javawro14.lesson.model.Lesson;
 import com.sda.javawro14.lesson.service.LessonService;
-import com.sda.javawro14.user.model.User;
+import com.sda.javawro14.user.model.UserDTO;
 import com.sda.javawro14.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,13 @@ public class CourseService {
 
     @PostConstruct
     void init(){
-        Course spring = new Course("Spring");
-        Lesson lessonIntro = new Lesson("Intro", new Date());
-        Lesson lessonSpringBoot = new Lesson("SpringBoot", new Date());
-        spring.setLessons(Arrays.asList(lessonIntro, lessonSpringBoot));
-        spring.setUsers(Arrays.asList(new User("Janusz", new Date()), new User("Danuta", new Date())));
-
-        allCourses.add(spring);
+//        Course spring = new Course("Spring");
+//        Lesson lessonIntro = new Lesson("Intro", new Date());
+//        Lesson lessonSpringBoot = new Lesson("SpringBoot", new Date());
+//        spring.setLessons(Arrays.asList(lessonIntro, lessonSpringBoot));
+//        spring.setUserDTOS(Arrays.asList(new UserDTO("Janusz", new Date()), new UserDTO("Danuta", new Date())));
+//
+//        allCourses.add(spring);
     }
 
     @Autowired
@@ -40,9 +40,9 @@ public class CourseService {
         this.lessonService = lessonService;
     }
 
-    public void createNewCourse(String courseName, List<User> users){
+    public void createNewCourse(String courseName, List<UserDTO> userDTOS){
         Course course = new Course(courseName);
-        course.setUsers(users);
+        course.setUserDTOS(userDTOS);
         course.setLessons(lessonService.getAllLessons());
         this.allCourses.add(course);
     }
