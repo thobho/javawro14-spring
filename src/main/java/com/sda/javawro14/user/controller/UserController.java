@@ -27,6 +27,7 @@ public class UserController {
         List<UserDTO> allUserDTOS = userService.getAllUsers();
         model.addAttribute("allStudents", allUserDTOS);
         model.addAttribute("newUser", new UserDTO());
+        model.addAttribute("queryString", new QueryString());
         return "allUsersPage";
     }
 
@@ -35,7 +36,37 @@ public class UserController {
         userService.saveUser(userDTO);
         List<UserDTO> updatedUserDTOList = userService.getAllUsers();
         model.addAttribute("allStudents", updatedUserDTOList);
+        return "redirect:/allUsersPage";
+    }
+
+    @PostMapping("/searchUserAction")
+    public String searchUserByName(@ModelAttribute("queryString") QueryString queryString, Model model){
+        List<UserDTO> foundUsers = userService.findByQueryString(queryString.getQueryString());
+
+        model.addAttribute("allStudents", foundUsers);
+        model.addAttribute("newUser", new UserDTO());
+        model.addAttribute("queryString", new QueryString());
+
         return "allUsersPage";
+    }
+
+    public static class QueryString{
+        String queryString;
+
+        public QueryString() {
+        }
+
+        public QueryString(String queryString) {
+            this.queryString = queryString;
+        }
+
+        public String getQueryString() {
+            return queryString;
+        }
+
+        public void setQueryString(String queryString) {
+            this.queryString = queryString;
+        }
     }
 
 }

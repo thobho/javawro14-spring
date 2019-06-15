@@ -50,6 +50,15 @@ public class UserService {
         throw new IllegalArgumentException("User with id not found");
     }
 
+
+    public List<UserDTO> findByQueryString(String queryString){
+        return userRepository
+                .findByNameLikeOrderByNameAsc(queryString)
+                .stream()
+                .map(userDocument -> modelMapper.map(userDocument, UserDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public String saveUser(String userName) {
         return "";
     }
