@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new course!!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<div class="container">
+    <form action="#" th:action="@{/addNewCourse}" th:object="${newCourse}" th:method="post">
+        <div class="form-group">
+            <fieldset>
+                <legend>Dane podstawowe</legend>
+                <label for="courseName">Nazwa kursu</label>
+                <input id="courseName" type="text" th:field="${newCourse.name}">
+                <br/>
+                <label for="courseStartDate">Data rozpoczęcia</label>
+                <input id="courseStartDate" type="date" th:field="${newCourse.startDate}"/>
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>Wybierz studentów</legend>
+            </fieldset>
+            <select name="students" th:field="${newCourse.users}" multiple style="width: 100%">
+                <option th:each="student: ${allStudents}" th:text="${student.name}" th:value="${student.id}">
+
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <fieldset>
+                <legend>Wybierz lekcje</legend>
+                <div th:each="lesson: ${allLessons}" >
+                    <input type="checkbox"
+                           id="chosenLesson"
+                           th:field="${newCourse.lessons}"
+                           th:value="${lesson.id}"
+                           th:text="${lesson.theme}">
+                </div>
+                <br>
+            </fieldset>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn-primary">
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

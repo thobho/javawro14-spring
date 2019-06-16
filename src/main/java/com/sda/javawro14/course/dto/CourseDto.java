@@ -4,6 +4,7 @@ import com.sda.javawro14.lesson.dto.LessonDto;
 import com.sda.javawro14.lesson.model.LessonDocument;
 import com.sda.javawro14.user.model.UserDTO;
 import com.sda.javawro14.user.model.UserDocument;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ public class CourseDto {
     private String name;
     private List<LessonDto> lessons;
     private List<UserDTO> users;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     public CourseDto() {

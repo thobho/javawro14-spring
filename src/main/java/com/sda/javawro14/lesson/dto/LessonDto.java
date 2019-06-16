@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class LessonDto {
 
-    //todo czy będzie potrzebny ID???
+    private String id;
     private String theme;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
@@ -18,6 +18,14 @@ public class LessonDto {
     public LessonDto(String theme, Date date) {
         this.theme = theme;
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTheme() {
