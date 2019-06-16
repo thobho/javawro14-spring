@@ -3,6 +3,7 @@ package com.sda.javawro14.user.controller;
 import com.sda.javawro14.user.service.UserService;
 import com.sda.javawro14.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class UserController {
         return "allUsersPage";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/addUserAction")
     public RedirectView addNewUser(@ModelAttribute("newUser") User user, Model model) {
         userService.saveUser(user);
