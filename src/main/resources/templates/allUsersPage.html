@@ -14,10 +14,10 @@
 
 <div class="container">
     <h2>Wyszukaj...</h2>
-    <form action="#" th:action="@{/searchUserAction}" th:object="${queryString}" method="post">
+    <form action="#" th:action="@{/searchUserAction}" method="get">
         <div class="form-group">
             <label for="queryString">Wyszukaj po</label>
-            <input id="queryString" type="text" th:field="${queryString.queryString}"/>
+            <input id="queryString" name="queryString" type="text"/>
         </div>
         <div class="form-group">
             <input type="submit" value="Submit" class="btn-primary"/>
