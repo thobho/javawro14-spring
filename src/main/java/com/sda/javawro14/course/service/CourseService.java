@@ -1,50 +1,33 @@
 package com.sda.javawro14.course.service;
 
-import com.sda.javawro14.course.model.Course;
-import com.sda.javawro14.lesson.service.LessonService;
-import com.sda.javawro14.user.model.UserDTO;
-import com.sda.javawro14.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sda.javawro14.course.dto.CourseDto;
+import com.sda.javawro14.course.repository.CourseRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
 
-    private UserService userService;
+    private final ModelMapper modelMapper;
 
-    private LessonService lessonService;
+    private final CourseRepository courseRepository;
 
-    private List<Course> allCourses = new ArrayList<>();
-
-    @PostConstruct
-    void init(){
-//        Course spring = new Course("Spring");
-//        LessonDto lessonIntro = new LessonDto("Intro", new Date());
-//        LessonDto lessonSpringBoot = new LessonDto("SpringBoot", new Date());
-//        spring.setLessonDtos(Arrays.asList(lessonIntro, lessonSpringBoot));
-//        spring.setUserDTOS(Arrays.asList(new UserDTO("Janusz", new Date()), new UserDTO("Danuta", new Date())));
-//
-//        allCourses.add(spring);
+    public CourseService(ModelMapper modelMapper, CourseRepository courseRepository) {
+        this.modelMapper = modelMapper;
+        this.courseRepository = courseRepository;
     }
 
-    @Autowired
-    public CourseService(UserService userService, LessonService lessonService) {
-        this.userService = userService;
-        this.lessonService = lessonService;
+    public String addNewCourse(){
+        //todo co bedzie potrzebne do tworzenia kursu, jakie będą typy parametrów
+        return "";
     }
 
-    public void createNewCourse(String courseName, List<UserDTO> userDTOS){
-        Course course = new Course(courseName);
-        course.setUserDTOS(userDTOS);
-        course.setLessonDtos(lessonService.getAllLessons());
-        this.allCourses.add(course);
-    }
-
-    public List<Course> getAllCourses(){
-        return this.allCourses;
+    public List<CourseDto> getAllCourses(){
+        return courseRepository.findAll().stream()
+                .map(courseDocument -> modelMapper.map(courseDocument, CourseDto.class))
+                .collect(Collectors.toList());
     }
 }
