@@ -1,12 +1,21 @@
-package com.sda.javawro14.lesson.model;
+package com.sda.javawro14.lesson.dto;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class Lesson {
+public class LessonDto {
+
+    //todo czy będzie potrzebny ID???
     private String theme;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    public Lesson(String theme, Date date) {
+
+    public LessonDto() {
+    }
+
+    public LessonDto(String theme, Date date) {
         this.theme = theme;
         this.date = date;
     }

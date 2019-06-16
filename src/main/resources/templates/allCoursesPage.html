@@ -33,7 +33,7 @@
                 </div>
             </td>
             <td>
-                <div th:each="lesson: ${course.lessons}">
+                <div th:each="lesson: ${course.lessonDtos}">
                     <span th:text="${lesson.theme}"></span>
                 </div>
             </td>

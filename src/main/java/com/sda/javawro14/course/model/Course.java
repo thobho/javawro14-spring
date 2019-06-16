@@ -1,6 +1,6 @@
 package com.sda.javawro14.course.model;
 
-import com.sda.javawro14.lesson.model.Lesson;
+import com.sda.javawro14.lesson.dto.LessonDto;
 import com.sda.javawro14.user.model.UserDTO;
 
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Course {
 
     private String name;
-    private List<Lesson> lessons;
+    private List<LessonDto> lessonDtos;
     private List<UserDTO> userDTOS;
     private Date startDate;
     private Date endDate;
@@ -24,7 +24,7 @@ public class Course {
                 .plusMonths(7);
 
         this.endDate = java.sql.Date.valueOf(endCourseDate);
-        this.lessons = new ArrayList<>();
+        this.lessonDtos = new ArrayList<>();
         this.userDTOS = new ArrayList<>();
     }
 
@@ -36,12 +36,12 @@ public class Course {
         this.name = name;
     }
 
-    public List<Lesson> getLessons() {
-        return lessons;
+    public List<LessonDto> getLessonDtos() {
+        return lessonDtos;
     }
 
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setLessonDtos(List<LessonDto> lessonDtos) {
+        this.lessonDtos = lessonDtos;
     }
 
     public List<UserDTO> getUserDTOS() {
